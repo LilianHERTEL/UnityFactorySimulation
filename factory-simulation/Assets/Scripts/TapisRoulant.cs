@@ -23,7 +23,7 @@ public class TapisRoulant : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log("AVANCE");
+        //Debug.Log("AVANCE");
         Vector3 position = rigidbodyTapis.position;
         rigidbodyTapis.position += Vector3.back * _speed * Time.fixedDeltaTime;
         rigidbodyTapis.MovePosition(position);

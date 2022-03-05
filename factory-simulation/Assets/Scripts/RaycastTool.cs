@@ -48,7 +48,10 @@ public class RaycastTool : MonoBehaviour
                 }
 
                 _touche = hitInfo.transform.gameObject;
-                if (_touche.CompareTag("Attrapable"))
+                if (_touche.CompareTag("SaisissableBEAR") || 
+                    _touche.CompareTag("SaisissablePENGUIN") || 
+                    _touche.CompareTag("SaisissableRABBIT") ||
+                    _touche.CompareTag("Jetable"))
                 {
                     _objetSaisi = _touche;
                     _objetSaisi_rigidbody = _touche.GetComponent<Rigidbody>();
@@ -76,8 +79,8 @@ public class RaycastTool : MonoBehaviour
     void GenerateRandomObject()
     {
         int i = Random.Range(0, _objects.Count);
-        Debug.Log("Nombre généré = " + i);
-        Instantiate(_objects[i], _distributeur.transform.position + new Vector3(-0.4f, 0, 0.7f), Quaternion.identity);
+        //Debug.Log("Nombre généré = " + i);
+        Instantiate(_objects[i], _distributeur.transform.position + new Vector3(-0.4f, 0, 0.7f), Quaternion.Euler(Random.Range(0, 90), Random.Range(0, 90), Random.Range(0, 90)));
     }
 
     void takeObject()
@@ -92,10 +95,12 @@ public class RaycastTool : MonoBehaviour
         _objetSaisi.transform.Translate(Vector3.forward);
 
         _objetSaisi.GetComponent<Collider>().isTrigger = true;
+
+        Debug.Log(_objetSaisi.tag);
     }
     void releaseObject()
     {
-        Debug.Log("Relâchement");
+        //Debug.Log("Relâchement");
         _saisieEnCours = false;
         _objetSaisi.GetComponent<Rigidbody>().useGravity = true;
         _objetSaisi.transform.parent = null;

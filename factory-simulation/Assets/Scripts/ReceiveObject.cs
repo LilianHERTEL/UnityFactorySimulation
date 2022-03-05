@@ -7,19 +7,30 @@ public class ReceiveObject : MonoBehaviour
 {
     private GameObject _receivedObject;
     public Text text;
+    public string type;
 
     private int score = 0;
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.CompareTag("Attrapable"))
+        if (type != "Jetable")
         {
-            _receivedObject = col.gameObject;
-            _receivedObject.GetComponent<Rigidbody>().useGravity = true;
-            col.isTrigger = false;
-            _receivedObject.transform.parent = null;
-            _receivedObject.tag = "Untagged";
+            if (col.gameObject.CompareTag(type))
+            {
+                _receivedObject = col.gameObject;
+                _receivedObject.GetComponent<Rigidbody>().useGravity = true;
+                col.isTrigger = false;
+                _receivedObject.transform.parent = null;
+                _receivedObject.tag = "Untagged";
 
+                score++;
+                Debug.Log("Score = " + score);
+                text.text = score.ToString();
+            }
+        }
+        else // Si Jetable (donc quand le script est associé à la poubelle)
+        {
+            Destroy(col.gameObject);
             score++;
             Debug.Log("Score = " + score);
             text.text = score.ToString();
