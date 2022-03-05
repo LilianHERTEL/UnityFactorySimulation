@@ -14,6 +14,7 @@ public class RaycastTool : MonoBehaviour
     private bool _saisieEnCours = false;
 
     private GameObject _objetSaisi = null;
+    private Rigidbody _objetSaisi_rigidbody = null;
 
     public float _rayWidth = 0.05f;
     void Awake()
@@ -27,6 +28,7 @@ public class RaycastTool : MonoBehaviour
     void LateUpdate()
     {
         GameObject _touche;
+        Rigidbody _touche_rigidbody;
 
         if (Physics.Raycast(transform.position, transform.forward, out var hitInfo))
         {
@@ -47,21 +49,12 @@ public class RaycastTool : MonoBehaviour
                 }
 
                 _touche = hitInfo.transform.gameObject;
-                _objetSaisi = _touche;
-                if (_touche.CompareTag("Attrapable") && !_saisieEnCours)
+                if (_touche.CompareTag("Attrapable"))
                 {
-                    _saisieEnCours = true;
-                    _touche.GetComponent<Rigidbody>().useGravity = false;
-                    _touche.transform.parent = transform.parent;
-                    _touche.transform.position = transform.parent.transform.position;
-                    _touche.transform.rotation = new Quaternion(0, 0, 0, 0);
-                    _touche.transform.Translate(Vector3.forward);
-                }
-                else if (_touche.CompareTag("Attrapable") && _saisieEnCours)
-                {
-                    _saisieEnCours = false;
-                    _touche.GetComponent<Rigidbody>().useGravity = true;
-                    _touche.transform.parent = null;
+                    _objetSaisi = _touche;
+                    _objetSaisi_rigidbody = _touche.GetComponent<Rigidbody>();
+                    if (!_saisieEnCours) takeObject();
+                    else releaseObject();
                 }
             }
 
@@ -69,18 +62,13 @@ public class RaycastTool : MonoBehaviour
             {
                 // Téléporter l'utilisateur
                 playerController.enabled = false;
-                _player.transform.position = hitInfo.point;
+                _player.transform.position = hitInfo.point + Vector3.up; // Vector3.up corrige un problème où le personnage se retrouve parfois dans le sol à l'arrivée de la téléportation
                 playerController.enabled = true;
             }
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && _saisieEnCours == true)
-            {
-                _saisieEnCours = false;
-                _objetSaisi.GetComponent<Rigidbody>().useGravity = true;
-                _objetSaisi.transform.parent = null;
-            }
+            if (Input.GetMouseButtonDown(0) && _saisieEnCours == true) releaseObject();
             rayRenderer.SetPosition(0, transform.position);
             rayRenderer.SetPosition(1, transform.position + transform.forward*1000f);
         }
@@ -91,5 +79,27 @@ public class RaycastTool : MonoBehaviour
         int i = Random.Range(0, 2);
         Debug.Log("Nombre généré = " + i);
         Instantiate(_objects[i], _distributeur.transform.position + new Vector3(-0.4f, 0, 0.7f), Quaternion.identity);
+    }
+
+    void takeObject()
+    {
+        _saisieEnCours = true;
+        _objetSaisi_rigidbody.velocity = Vector3.zero;
+        _objetSaisi_rigidbody.angularVelocity = Vector3.zero;
+        _objetSaisi_rigidbody.useGravity = false;
+        _objetSaisi.transform.parent = transform.parent;
+        _objetSaisi.transform.position = transform.parent.transform.position;
+        _objetSaisi.transform.rotation = new Quaternion(0, 0, 0, 0);
+        _objetSaisi.transform.Translate(Vector3.forward);
+
+        _objetSaisi.GetComponent<Collider>().isTrigger = true;
+    }
+    void releaseObject()
+    {
+        _saisieEnCours = false;
+        _objetSaisi.GetComponent<Rigidbody>().useGravity = true;
+        _objetSaisi.transform.parent = null;
+
+        _objetSaisi.GetComponent<Collider>().isTrigger = false;
     }
 }
