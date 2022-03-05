@@ -4,26 +4,30 @@ using UnityEngine;
 
 public class TapisRoulant : MonoBehaviour
 {
-    Rigidbody _rigidbody;
-    Renderer _renderer;
-
-    public float speed;
+    public float speed = 0;
+    public GameObject begin, main, end;
+    Renderer rendererBegin, rendererMain, rendererEnd;
+    Rigidbody rigidbodyTapis;
 
     // Start is called before the first frame update
     void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _renderer = GetComponent<Renderer>();
+        rigidbodyTapis = GetComponent<Rigidbody>();
+        rendererBegin = begin.GetComponent<Renderer>();
+        rendererMain = main.GetComponent<Renderer>();
+        rendererEnd = end.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         Debug.Log("AVANCE");
-        Vector3 position = _rigidbody.position;
-        _rigidbody.position += Vector3.back * speed * Time.fixedDeltaTime;
-        _rigidbody.MovePosition(position);
+        Vector3 position = rigidbodyTapis.position;
+        rigidbodyTapis.position += Vector3.back * speed * Time.fixedDeltaTime;
+        rigidbodyTapis.MovePosition(position);
 
-        _renderer.material.SetTextureOffset("_MainTex", new Vector2(0, Time.time * speed));
+        rendererBegin.material.SetTextureOffset("_MainTex", new Vector2(-Time.time * speed * 2, 0));
+        rendererMain.material.SetTextureOffset("_MainTex", new Vector2(0, Time.time * speed));
+        rendererEnd.material.SetTextureOffset("_MainTex", new Vector2(-Time.time * speed * 2, 0));
     }
 }
