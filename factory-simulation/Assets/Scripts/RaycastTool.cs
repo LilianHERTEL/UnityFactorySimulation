@@ -28,7 +28,6 @@ public class RaycastTool : MonoBehaviour
     void LateUpdate()
     {
         GameObject _touche;
-        Rigidbody _touche_rigidbody;
 
         if (Physics.Raycast(transform.position, transform.forward, out var hitInfo))
         {
@@ -68,7 +67,7 @@ public class RaycastTool : MonoBehaviour
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && _saisieEnCours == true) releaseObject();
+            if (Input.GetMouseButtonDown(0) && _saisieEnCours) releaseObject();
             rayRenderer.SetPosition(0, transform.position);
             rayRenderer.SetPosition(1, transform.position + transform.forward*1000f);
         }
@@ -76,7 +75,7 @@ public class RaycastTool : MonoBehaviour
 
     void GenerateRandomObject()
     {
-        int i = Random.Range(0, 2);
+        int i = Random.Range(0, _objects.Count);
         Debug.Log("Nombre généré = " + i);
         Instantiate(_objects[i], _distributeur.transform.position + new Vector3(-0.4f, 0, 0.7f), Quaternion.identity);
     }
@@ -96,10 +95,14 @@ public class RaycastTool : MonoBehaviour
     }
     void releaseObject()
     {
+        Debug.Log("Relâchement");
         _saisieEnCours = false;
         _objetSaisi.GetComponent<Rigidbody>().useGravity = true;
         _objetSaisi.transform.parent = null;
 
         _objetSaisi.GetComponent<Collider>().isTrigger = false;
+
+        _objetSaisi = null;
+        _objetSaisi_rigidbody = null;
     }
 }
