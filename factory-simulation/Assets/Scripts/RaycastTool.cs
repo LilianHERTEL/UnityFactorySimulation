@@ -35,32 +35,34 @@ public class RaycastTool : MonoBehaviour
      
             Debug.DrawRay(transform.position, transform.forward, Color.blue);
 
+            // Gestion du clic gauche laser
             if (Input.GetMouseButtonDown(0))
             {
-                //@TODO Interagir avec les boutons et attraper les objets
                 // Animation appui bouton à faire
 
                 _touche = hitInfo.transform.gameObject;
 
-                // Distributeur fonctionne
-                if (_touche.CompareTag("BoutonPorte"))
-                {
-                    GameManager.openDoor = true;
-                }
-                else if (_touche.CompareTag("BoutonDistrib"))
-                {
-                    GenerateRandomObject();
-                } 
-                else if (isSaisissable(_touche))
+                if (isSaisissable(_touche))
                 {
                     if (!_saisieEnCours) takeObject(_touche);
                     else releaseObject();
+                } 
+                else {
+                    switch (_touche.tag)
+                    {
+                        case "BoutonPorte": GameManager.openDoor = true;
+                                            break;
+                        case "BoutonDistrib": GenerateRandomObject();
+                                              break;
+                        case "ExitButton": GameManager.ExitGame();
+                                           break;
+                    }
                 }
             }
 
+            // Gestion du clic droit téléportation
             if (Input.GetMouseButtonDown(1))
             {
-                // Téléporter l'utilisateur
                 playerController.enabled = false;
                 _player.transform.position = hitInfo.point + Vector3.up; // Vector3.up corrige un problème où le personnage se retrouve parfois dans le sol à l'arrivée de la téléportation
                 playerController.enabled = true;

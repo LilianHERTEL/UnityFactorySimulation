@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         myController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked; // Curseur bloqué au centre de l'écran, permettant de faire tourner
                                                   // librement la caméra sans risquer de sortir le curseur
