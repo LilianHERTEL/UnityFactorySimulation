@@ -9,8 +9,6 @@ public class RaycastTool : MonoBehaviour
     public LineRenderer rayRenderer;
     public GameObject _player;
     public GameObject _distributeur;
-    public GameObject _buttonDistrib;
-    public GameObject _buttonPorte;
     public List<GameObject> _objects;
     private bool _saisieEnCours = false;
 
@@ -45,11 +43,11 @@ public class RaycastTool : MonoBehaviour
                 _touche = hitInfo.transform.gameObject;
 
                 // Distributeur fonctionne
-                if (_touche == _buttonPorte)
+                if (_touche.CompareTag("BoutonPorte"))
                 {
                     GameManager.openDoor = true;
                 }
-                else if (_touche == _buttonDistrib)
+                else if (_touche.CompareTag("BoutonDistrib"))
                 {
                     GenerateRandomObject();
                 } 
@@ -92,7 +90,7 @@ public class RaycastTool : MonoBehaviour
                 _obj.CompareTag("SaisissableRABBIT") ||
                 _obj.CompareTag("SaisissableRABBIT_Present") ||
                 _obj.CompareTag("Jetable");
-        Debug.Log(res);
+        //Debug.Log(res);
         return (res);
     }
     void takeObject(GameObject _obj)
@@ -111,7 +109,7 @@ public class RaycastTool : MonoBehaviour
 
         _objetSaisi.GetComponent<Collider>().isTrigger = true;
 
-        Debug.Log(_objetSaisi.tag);
+        //Debug.Log(_objetSaisi.tag);
     }
     void releaseObject()
     {

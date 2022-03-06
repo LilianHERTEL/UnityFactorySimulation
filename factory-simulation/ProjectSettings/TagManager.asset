@@ -11,6 +11,9 @@ TagManager:
   - SaisissableBEAR_Present
   - SaisissablePENGUIN_Present
   - SaisissableRABBIT_Present
+  - Attrapable
+  - BoutonPorte
+  - BoutonDistrib
   layers:
   - Default
   - TransparentFX
