@@ -15,7 +15,7 @@ public class ReceiveObject : MonoBehaviour
     {
         if (type != "Jetable")
         {
-            if (col.gameObject.CompareTag(type))
+            if (col.gameObject.CompareTag(type + "_Present"))
             {
                 _receivedObject = col.gameObject;
                 _receivedObject.GetComponent<Rigidbody>().useGravity = true;
@@ -24,7 +24,6 @@ public class ReceiveObject : MonoBehaviour
                 _receivedObject.tag = "Untagged";
 
                 score++;
-                Debug.Log("Score = " + score);
                 text.text = score.ToString();
             }
         }
@@ -32,7 +31,6 @@ public class ReceiveObject : MonoBehaviour
         {
             Destroy(col.gameObject);
             score++;
-            Debug.Log("Score = " + score);
             text.text = score.ToString();
         }
     }

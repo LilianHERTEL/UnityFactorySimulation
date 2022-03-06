@@ -48,9 +48,9 @@ public class RaycastTool : MonoBehaviour
                 }
 
                 _touche = hitInfo.transform.gameObject;
-                if (_touche.CompareTag("SaisissableBEAR") || 
-                    _touche.CompareTag("SaisissablePENGUIN") || 
-                    _touche.CompareTag("SaisissableRABBIT") ||
+                if (_touche.CompareTag("SaisissableBEAR") || _touche.CompareTag("SaisissableBEAR_Present") ||
+                    _touche.CompareTag("SaisissablePENGUIN") || _touche.CompareTag("SaisissablePENGUIN_Present")  ||
+                    _touche.CompareTag("SaisissableRABBIT") || _touche.CompareTag("SaisissableRABBIT_Present") ||
                     _touche.CompareTag("Jetable"))
                 {
                     _objetSaisi = _touche;

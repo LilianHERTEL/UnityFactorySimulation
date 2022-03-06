@@ -8,6 +8,9 @@ TagManager:
   - SaisissablePENGUIN
   - SaisissableRABBIT
   - Jetable
+  - SaisissableBEAR_Present
+  - SaisissablePENGUIN_Present
+  - SaisissableRABBIT_Present
   layers:
   - Default
   - TransparentFX

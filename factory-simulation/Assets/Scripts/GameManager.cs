@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static float conveyor_speed = 2;
+    public static float conveyor_speed = 0.5f;
 }
