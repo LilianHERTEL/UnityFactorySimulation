@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private bool _gameIsOver = false;
     private float _timeSeconds;
 
+    public static GameObject objetSaisi = null;
+
     private void Awake()
     {
         _timeSeconds = time * 60;

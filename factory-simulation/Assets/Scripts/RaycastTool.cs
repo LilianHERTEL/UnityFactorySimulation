@@ -12,7 +12,6 @@ public class RaycastTool : MonoBehaviour
     public List<GameObject> _objects;
     private bool _saisieEnCours = false;
 
-    private GameObject _objetSaisi = null;
     private Rigidbody _objetSaisi_rigidbody = null;
 
     public float _rayWidth = 0.05f;
@@ -85,44 +84,41 @@ public class RaycastTool : MonoBehaviour
 
     bool isSaisissable(GameObject _obj)
     {
-        bool res = _obj.CompareTag("SaisissableBEAR") ||
+        return (_obj.CompareTag("SaisissableBEAR") ||
                 _obj.CompareTag("SaisissableBEAR_Present") ||
                 _obj.CompareTag("SaisissablePENGUIN") ||
                 _obj.CompareTag("SaisissablePENGUIN_Present") ||
                 _obj.CompareTag("SaisissableRABBIT") ||
                 _obj.CompareTag("SaisissableRABBIT_Present") ||
-                _obj.CompareTag("Jetable");
-        //Debug.Log(res);
-        return (res);
+                _obj.CompareTag("Jetable"));
     }
     void takeObject(GameObject _obj)
     {
-        _objetSaisi = _obj;
+        GameManager.objetSaisi = _obj;
         _objetSaisi_rigidbody = _obj.GetComponent<Rigidbody>();
 
         _saisieEnCours = true;
         _objetSaisi_rigidbody.velocity = Vector3.zero;
         _objetSaisi_rigidbody.angularVelocity = Vector3.zero;
         _objetSaisi_rigidbody.useGravity = false;
-        _objetSaisi.transform.parent = transform.parent;
-        _objetSaisi.transform.position = transform.parent.transform.position;
-        _objetSaisi.transform.rotation = new Quaternion(0, 0, 0, 0);
-        _objetSaisi.transform.Translate(Vector3.forward);
+        GameManager.objetSaisi.transform.parent = transform.parent;
+        GameManager.objetSaisi.transform.position = transform.parent.transform.position;
+        GameManager.objetSaisi.transform.rotation = new Quaternion(0, 0, 0, 0);
+        GameManager.objetSaisi.transform.Translate(Vector3.forward);
 
-        _objetSaisi.GetComponent<Collider>().isTrigger = true;
+        GameManager.objetSaisi.GetComponent<Collider>().isTrigger = true;
 
         //Debug.Log(_objetSaisi.tag);
     }
     void releaseObject()
     {
         //Debug.Log("Relâchement");
+        GameManager.objetSaisi.GetComponent<Rigidbody>().useGravity = true;
+        GameManager.objetSaisi.GetComponent<Collider>().isTrigger = false;
+        GameManager.objetSaisi.transform.parent = null;
+
         _saisieEnCours = false;
-        _objetSaisi.GetComponent<Rigidbody>().useGravity = true;
-        _objetSaisi.transform.parent = null;
-
-        _objetSaisi.GetComponent<Collider>().isTrigger = false;
-
-        _objetSaisi = null;
+        GameManager.objetSaisi = null;
         _objetSaisi_rigidbody = null;
     }
 }
