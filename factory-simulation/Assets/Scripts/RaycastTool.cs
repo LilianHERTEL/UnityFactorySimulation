@@ -10,6 +10,7 @@ public class RaycastTool : MonoBehaviour
     public GameObject _player;
     public GameObject _distributeur;
     public GameObject _buttonDistrib;
+    public GameObject _buttonPorte;
     public List<GameObject> _objects;
     private bool _saisieEnCours = false;
 
@@ -41,21 +42,20 @@ public class RaycastTool : MonoBehaviour
                 //@TODO Interagir avec les boutons et attraper les objets
                 // Animation appui bouton à faire
 
+                _touche = hitInfo.transform.gameObject;
+
                 // Distributeur fonctionne
-                if (hitInfo.transform.gameObject == _buttonDistrib)
+                if (_touche == _buttonPorte)
+                {
+                    GameManager.openDoor = true;
+                }
+                else if (_touche == _buttonDistrib)
                 {
                     GenerateRandomObject();
-                }
-
-                _touche = hitInfo.transform.gameObject;
-                if (_touche.CompareTag("SaisissableBEAR") || _touche.CompareTag("SaisissableBEAR_Present") ||
-                    _touche.CompareTag("SaisissablePENGUIN") || _touche.CompareTag("SaisissablePENGUIN_Present")  ||
-                    _touche.CompareTag("SaisissableRABBIT") || _touche.CompareTag("SaisissableRABBIT_Present") ||
-                    _touche.CompareTag("Jetable"))
+                } 
+                else if (isSaisissable(_touche))
                 {
-                    _objetSaisi = _touche;
-                    _objetSaisi_rigidbody = _touche.GetComponent<Rigidbody>();
-                    if (!_saisieEnCours) takeObject();
+                    if (!_saisieEnCours) takeObject(_touche);
                     else releaseObject();
                 }
             }
@@ -83,8 +83,23 @@ public class RaycastTool : MonoBehaviour
         Instantiate(_objects[i], _distributeur.transform.position + new Vector3(-0.4f, 0, 0.7f), Quaternion.Euler(Random.Range(0, 90), Random.Range(0, 90), Random.Range(0, 90)));
     }
 
-    void takeObject()
+    bool isSaisissable(GameObject _obj)
     {
+        bool res = _obj.CompareTag("SaisissableBEAR") ||
+                _obj.CompareTag("SaisissableBEAR_Present") ||
+                _obj.CompareTag("SaisissablePENGUIN") ||
+                _obj.CompareTag("SaisissablePENGUIN_Present") ||
+                _obj.CompareTag("SaisissableRABBIT") ||
+                _obj.CompareTag("SaisissableRABBIT_Present") ||
+                _obj.CompareTag("Jetable");
+        Debug.Log(res);
+        return (res);
+    }
+    void takeObject(GameObject _obj)
+    {
+        _objetSaisi = _obj;
+        _objetSaisi_rigidbody = _obj.GetComponent<Rigidbody>();
+
         _saisieEnCours = true;
         _objetSaisi_rigidbody.velocity = Vector3.zero;
         _objetSaisi_rigidbody.angularVelocity = Vector3.zero;

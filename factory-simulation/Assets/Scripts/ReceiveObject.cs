@@ -28,13 +28,13 @@ public class ReceiveObject : MonoBehaviour
             }
         }
         else // Si Jetable (donc quand le script est associé à la poubelle)
-        {/*
+        {
             if (col.gameObject.CompareTag("Jetable"))
             {
                 Destroy(col.gameObject);
                 score++;
                 text.text = score.ToString();
-            }*/
+            }
         }
     }
 }

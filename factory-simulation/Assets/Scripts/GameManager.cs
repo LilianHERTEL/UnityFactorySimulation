@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static bool openDoor = false;
     public static float conveyor_speed = 0.5f;
 }
