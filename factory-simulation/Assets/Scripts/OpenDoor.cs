@@ -28,7 +28,7 @@ public class OpenDoor : MonoBehaviour
         audioSource = GetComponents<AudioSource>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Si bouton appuyé ET coroutine pas déjà en cours d'exécution
         if (GameManager.openDoor && currentCoroutine == null)
@@ -62,11 +62,11 @@ public class OpenDoor : MonoBehaviour
         {
             doorLeft.transform.position = xyz_left + Vector3.left * (t + 0.01f);
             doorRight.transform.position = xyz_right + Vector3.right * (t + 0.01f);
-            yield return new WaitForSecondsRealtime(animationLength * 0.01f); // Point où l'exécution se met en pause jusqu'à la prochaine frame
+            yield return new WaitForSeconds(animationLength * 0.01f); // Point où l'exécution se met en pause jusqu'à la prochaine frame
         }
 
         // Attente pour laisser passer le joueur
-        yield return new WaitForSecondsRealtime(waitingLength);
+        yield return new WaitForSeconds(waitingLength);
 
         // Son de fermeture
         audioSource[1].Play();
@@ -78,7 +78,7 @@ public class OpenDoor : MonoBehaviour
         {
             doorLeft.transform.position = xyz_left - Vector3.left * (t + 0.01f);
             doorRight.transform.position = xyz_right - Vector3.right * (t + 0.01f);
-            yield return new WaitForSecondsRealtime(animationLength * 0.01f); // Point où l'exécution se met en pause jusqu'à la prochaine frame
+            yield return new WaitForSeconds(animationLength * 0.01f); // Point où l'exécution se met en pause jusqu'à la prochaine frame
         }
 
         GameManager.openDoor = false;

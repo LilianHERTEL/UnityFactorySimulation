@@ -170,7 +170,6 @@ public class RaycastTool : MonoBehaviour
         if (_point.y <= 0.25) // Ne téléporte que si le sol est visé ou un peu au dessus
             player.transform.position = _point + Vector3.up; // Vector3.up corrige un problème où le personnage se retrouve
                                                                     // parfois dans le sol à l'arrivée de la téléportation
-        else Debug.Log("TRICHEUR !");
         playerController.enabled = true;
     }
 }

@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Permet de conserver cet objet dans toutes les scènes
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Déclenche le timer une seule fois, à la première ouverture de la porte
         if (openDoor && !isStartedTimer) isStartedTimer = true;
