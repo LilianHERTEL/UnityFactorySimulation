@@ -71,5 +71,6 @@ public class ReceiveObject : MonoBehaviour
         GameManager.nbMistakes++;
 
         //Alarme();
+        GameManager.triggerAlarm = true;
     }
 }

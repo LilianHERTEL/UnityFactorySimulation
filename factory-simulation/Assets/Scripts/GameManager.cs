@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public static int score = 0;
     public static GameObject objetSaisi = null;
 
+    Coroutine currentCoroutine = null; // Conserve la coroutine en cours d'exécution
+    public static bool triggerAlarm = false;
+
     [Tooltip("Limite de temps en minutes")]
     public float time = 1;
 
@@ -61,6 +64,9 @@ public class GameManager : MonoBehaviour
                 _timeSeconds -= Time.deltaTime;
                 UpdateTimeDisplay();
             }
+
+            if (triggerAlarm && currentCoroutine == null) 
+                currentCoroutine = StartCoroutine(SpotlightsCoroutine());
         }
     }
 
@@ -112,5 +118,38 @@ public class GameManager : MonoBehaviour
     {
         //Debug.Log("Exiting game"); // pour tests dans l'éditeur
         Application.Quit();
+    }
+
+    private IEnumerator SpotlightsCoroutine()
+    {
+        Light[] lights = GameObject.FindObjectsOfType<Light>();
+
+        for (int n = 0; n < 2; n++)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < lights.Length; j++)
+                {
+                    lights[j].color = new Color(1, lights[j].color.g - 0.01f, lights[j].color.b - 0.01f);
+
+                }
+                yield return new WaitForSecondsRealtime(0.0025f);
+            }
+            Debug.Log(lights[0].color);
+            Debug.Log("etape 2");
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < lights.Length; j++)
+                {
+                    lights[j].color = new Color(1, lights[j].color.g + 0.01f, lights[j].color.b + 0.01f);
+
+                }
+                yield return new WaitForSecondsRealtime(0.0025f);
+            }
+            Debug.Log(lights[0].color);
+        }
+        
+        triggerAlarm = false;
+        currentCoroutine = null;
     }
 }
