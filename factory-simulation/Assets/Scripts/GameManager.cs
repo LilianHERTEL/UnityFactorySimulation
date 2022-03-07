@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private bool _gameIsOver = false;
     private float _timeSeconds;
     private bool isStartedTimer = false;
+    private AudioSource audioSource;
 
     public static int nbMistakes = 0;
 
@@ -42,7 +43,8 @@ public class GameManager : MonoBehaviour
     {
         textTimeTotal.text = time.ToString();
         _timeSeconds = time * 60;
-        
+        audioSource = GetComponent<AudioSource>();
+
         DontDestroyOnLoad(gameObject); // Permet de conserver cet objet dans toutes les scènes
     }
 
@@ -124,6 +126,8 @@ public class GameManager : MonoBehaviour
     {
         Light[] lights = GameObject.FindObjectsOfType<Light>();
 
+        audioSource.Play();
+
         for (int n = 0; n < 2; n++)
         {
             for (int i = 0; i < 100; i++)
@@ -133,7 +137,7 @@ public class GameManager : MonoBehaviour
                     lights[j].color = new Color(1, lights[j].color.g - 0.01f, lights[j].color.b - 0.01f);
 
                 }
-                yield return new WaitForSecondsRealtime(0.0025f);
+                yield return new WaitForSecondsRealtime(0.0035f);
             }
             Debug.Log(lights[0].color);
             Debug.Log("etape 2");
@@ -144,7 +148,7 @@ public class GameManager : MonoBehaviour
                     lights[j].color = new Color(1, lights[j].color.g + 0.01f, lights[j].color.b + 0.01f);
 
                 }
-                yield return new WaitForSecondsRealtime(0.0025f);
+                yield return new WaitForSecondsRealtime(0.0035f);
             }
             Debug.Log(lights[0].color);
         }

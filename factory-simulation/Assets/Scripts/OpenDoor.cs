@@ -7,12 +7,14 @@ using UnityEngine;
 // </summary>
 public class OpenDoor : MonoBehaviour
 {
+    private AudioSource[] audioSource;
+
     GameObject doorLeft, doorRight; // Objets enfants porte gauche et droite
 
     Coroutine currentCoroutine = null; // Conserve la coroutine en cours d'exécution
 
     [Tooltip("Temps d'ouverture (/fermeture) de la porte (en secondes)")]
-    public float animationLength = 1;
+    public float animationLength = 0.8f;
 
     [Tooltip("Temps durant lequel la porte reste ouverte pour laisser passer le joueur (en secondes)")]
     public float waitingLength = 1;
@@ -22,6 +24,8 @@ public class OpenDoor : MonoBehaviour
         // Récupération des portes
         doorLeft = transform.GetChild(0).gameObject;
         doorRight = transform.GetChild(1).gameObject;
+
+        audioSource = GetComponents<AudioSource>();
     }
 
     void Update()
@@ -46,6 +50,9 @@ public class OpenDoor : MonoBehaviour
         if (currentCoroutine != null)
             Debug.Log("Already running");
 
+        // Son d'ouverture
+        audioSource[0].Play();
+
         // Calcul des positions initiales de la porte
         xyz_left = doorLeft.transform.position;
         xyz_right = doorRight.transform.position;
@@ -58,6 +65,9 @@ public class OpenDoor : MonoBehaviour
 
         // Attente pour laisser passer le joueur
         yield return new WaitForSecondsRealtime(waitingLength);
+
+        // Son de fermeture
+        audioSource[1].Play();
 
         // Calcul des nouvelles positions portes ouvertes
         xyz_left = doorLeft.transform.position;
