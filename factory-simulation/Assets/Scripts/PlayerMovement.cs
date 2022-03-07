@@ -93,7 +93,5 @@ public class PlayerMovement : MonoBehaviour
             myController.transform.Rotate(new Vector3(0f, mouseX, 0f), Space.Self);
             myEyes.localEulerAngles = new Vector3(eyeVerticalRotation, 0f, 0f);
         }
-
-
     }
 }

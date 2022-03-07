@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// <summary>
+//      Script associé à la porte
+// </summary>
 public class OpenDoor : MonoBehaviour
 {
     GameObject doorLeft, doorRight; // Objets enfants porte gauche et droite
@@ -10,6 +13,7 @@ public class OpenDoor : MonoBehaviour
 
     [Tooltip("Temps d'ouverture (/fermeture) de la porte (en secondes)")]
     public float animationLength = 1;
+
     [Tooltip("Temps durant lequel la porte reste ouverte pour laisser passer le joueur (en secondes)")]
     public float waitingLength = 1;
 
