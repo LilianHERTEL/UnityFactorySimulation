@@ -41,6 +41,8 @@ public class OpenDoor : MonoBehaviour
     //      Effectue une translation de chaque côté de la porte vers l'extérieur
     //      Laisse passer le joueur durant waitingLength secondes
     //      Puis referme les portes
+    //      
+    //      Joue un son en même temps
     // </summary>
     IEnumerator TranslateX()
     {

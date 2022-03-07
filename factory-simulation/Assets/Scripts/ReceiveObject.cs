@@ -70,7 +70,7 @@ public class ReceiveObject : MonoBehaviour
         GameManager.score--;
         GameManager.nbMistakes++;
 
-        //Alarme();
+        // Déclenche l'alarme à la prochaine frame
         GameManager.triggerAlarm = true;
     }
 }

@@ -55,7 +55,7 @@ public class RaycastTool : MonoBehaviour
                 } 
                 else {
                     switch (_touche.tag)
-                    {   // Déclenchera l'ouverture de la porte dans le Update du GameManager
+                    {   // Déclenchera l'ouverture de la porte à la prochaine frame dans le Update du GameManager
                         case "BoutonPorte": GameManager.openDoor = true;
                                             break;
                         // Fait sortir un nouvel objet du distributeur

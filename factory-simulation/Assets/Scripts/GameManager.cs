@@ -122,6 +122,11 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    // <summary>
+    //      Coroutine de déclenchement de l'alarme
+    //      
+    //      Fait clignoter les spots lumineux en rouge et déclenche une alarme sonore
+    // </summary>
     private IEnumerator SpotlightsCoroutine()
     {
         Light[] lights = GameObject.FindObjectsOfType<Light>();
@@ -139,8 +144,6 @@ public class GameManager : MonoBehaviour
                 }
                 yield return new WaitForSecondsRealtime(0.0035f);
             }
-            Debug.Log(lights[0].color);
-            Debug.Log("etape 2");
             for (int i = 0; i < 100; i++)
             {
                 for (int j = 0; j < lights.Length; j++)
@@ -150,7 +153,6 @@ public class GameManager : MonoBehaviour
                 }
                 yield return new WaitForSecondsRealtime(0.0035f);
             }
-            Debug.Log(lights[0].color);
         }
         
         triggerAlarm = false;
