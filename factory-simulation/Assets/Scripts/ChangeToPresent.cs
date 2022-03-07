@@ -20,15 +20,22 @@ public class ChangeToPresent : MonoBehaviour
     private void OnTriggerExit(Collider col)
     {
         _in = col.gameObject;
-        if (!_in.CompareTag("Jetable") && // Evite d'emballer les objets jetables
-            !_in.tag.Contains("_Present") && // Evite d'emballer deux fois le même objet
-            _in != GameManager.objetSaisi) // Evite d'emballer par erreur un objet saisi
-                                           // (évite aussi la triche en passant directement
-                                           // l'objet dans la machine sans passer par le tapis roulant)
+        if (IsEmballable(_in)) 
         {
             _out = Instantiate(present, _in.transform.position, Quaternion.identity);
             _out.tag = _in.tag + "_Present";
             Destroy(_in);
         }
+    }
+
+    private bool IsEmballable(GameObject _in)
+    {
+        return (!_in.CompareTag("Untagged") && // Eviter que le joueur passe dans la machine à emballer
+                                               // via un glitch que nous avons identifié (grâce à la téléportation)
+                !_in.CompareTag("Jetable") && // Evite d'emballer les objets jetables
+                !_in.tag.Contains("_Present") && // Evite d'emballer deux fois le même objet
+                _in != GameManager.objetSaisi); // Evite d'emballer par erreur un objet saisi
+                                                // (évite aussi la triche en passant directement
+                                                // l'objet dans la machine sans passer par le tapis roulant)
     }
 }

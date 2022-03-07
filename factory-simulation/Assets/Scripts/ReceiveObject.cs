@@ -24,6 +24,7 @@ public class ReceiveObject : MonoBehaviour
     //      Vérifie si l'objet posé correspond au type attendu par CE réceptacle
     //      Si OK, réinitialise les caractéristiques de l'objet précédemment saisi
     //      Et incrémente le score pour ce type d'objet
+    //      Sinon, décrémente le score, détruit l'objet, et incrémente le nb. d'erreurs, puis déclenche l'alarme
     // </summary>
     private void OnTriggerEnter(Collider col)
     {
@@ -46,6 +47,7 @@ public class ReceiveObject : MonoBehaviour
                 text.text = localScore.ToString();
                 GameManager.score++;
             }
+            else Mistake(obj);
         }
         else // Si type attendu = Jetable (quand le script est associé à la poubelle)
         {
@@ -56,6 +58,18 @@ public class ReceiveObject : MonoBehaviour
                 text.text = localScore.ToString();
                 GameManager.score++;
             }
+            else Mistake(obj);
         }
+    }
+
+    void Mistake(GameObject _in)
+    {
+        Destroy(_in);
+        localScore--;
+        text.text = localScore.ToString();
+        GameManager.score--;
+        GameManager.nbMistakes++;
+
+        //Alarme();
     }
 }

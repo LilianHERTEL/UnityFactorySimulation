@@ -48,10 +48,10 @@ public class RaycastTool : MonoBehaviour
                 _touche = hitInfo.transform.gameObject;
 
                 // Vérifie l'action à exécuter avec l'objet touché (saisie ou interaction avec un bouton)
-                if (isSaisissable(_touche))
+                if (IsSaisissable(_touche))
                 {
-                    if (!_saisieEnCours) takeObject(_touche); // Si objet saisissable et non saisi : saisir l'objet
-                    else releaseObject(); // Si saisissable et saisi : le relâcher
+                    if (!_saisieEnCours) TakeObject(_touche); // Si objet saisissable et non saisi : saisir l'objet
+                    else ReleaseObject(); // Si saisissable et saisi : le relâcher
                 } 
                 else {
                     switch (_touche.tag)
@@ -71,10 +71,7 @@ public class RaycastTool : MonoBehaviour
             // Gestion du clic droit : téléportation
             if (Input.GetMouseButtonDown(1))
             {
-                playerController.enabled = false;
-                player.transform.position = hitInfo.point + Vector3.up; // Vector3.up corrige un problème où le personnage se retrouve
-                                                                         // parfois dans le sol à l'arrivée de la téléportation
-                playerController.enabled = true;
+                Teleport(hitInfo.point);
             }
         }
         else
@@ -82,7 +79,7 @@ public class RaycastTool : MonoBehaviour
             // Si clic gauche quand laser ne pointe pas un objet :
             // relâche l'objet saisi 
             // Par sécurité mais a priori inutile car l'objet saisi est toujours devant le laser
-            if (Input.GetMouseButtonDown(0) && _saisieEnCours) releaseObject();
+            if (Input.GetMouseButtonDown(0) && _saisieEnCours) ReleaseObject();
 
             rayRenderer.SetPosition(0, transform.position);
             rayRenderer.SetPosition(1, transform.position + transform.forward*1000f);
@@ -105,7 +102,7 @@ public class RaycastTool : MonoBehaviour
     // <summary>
     //      Vérifie qu'un objet fait partie des objets saisissables
     // </summary>
-    bool isSaisissable(GameObject _obj)
+    bool IsSaisissable(GameObject _obj)
     {
         return (_obj.CompareTag("SaisissableBEAR") ||
                 _obj.CompareTag("SaisissableBEAR_Present") ||
@@ -124,7 +121,7 @@ public class RaycastTool : MonoBehaviour
     //      Met l'objet en tant qu'enfant de l'objet Main droite
     //      Place l'objet devant la main
     // </summary>
-    void takeObject(GameObject _obj)
+    void TakeObject(GameObject _obj)
     {
         GameManager.objetSaisi = _obj;
         _objetSaisi_rigidbody = _obj.GetComponent<Rigidbody>();
@@ -151,7 +148,7 @@ public class RaycastTool : MonoBehaviour
     //      Réactive les collisions
     //      Remet l'objet en tant qu'enfant de la scène
     // </summary>
-    void releaseObject()
+    void ReleaseObject()
     {
         //Debug.Log("Relâchement");
         GameManager.objetSaisi.GetComponent<Rigidbody>().useGravity = true;
@@ -161,5 +158,19 @@ public class RaycastTool : MonoBehaviour
         _saisieEnCours = false;
         GameManager.objetSaisi = null;
         _objetSaisi_rigidbody = null;
+    }
+
+    // <summary>
+    //      Téléporte le joueur à la position pointée par le laser au sol
+    // </summary>
+    void Teleport(Vector3 _point)
+    {
+        playerController.enabled = false;
+
+        if (_point.y <= 0.25) // Ne téléporte que si le sol est visé ou un peu au dessus
+            player.transform.position = _point + Vector3.up; // Vector3.up corrige un problème où le personnage se retrouve
+                                                                    // parfois dans le sol à l'arrivée de la téléportation
+        else Debug.Log("TRICHEUR !");
+        playerController.enabled = true;
     }
 }
